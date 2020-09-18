@@ -1,4 +1,4 @@
-package ru.cherniak.hibernate.h2;
+package ru.cherniak.hibernate.h2.model;
 
 
 import javax.persistence.*;

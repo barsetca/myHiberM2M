@@ -14,8 +14,8 @@
         <property name="current_session_context_class">thread</property>
         <property name="hibernate.hbm2ddl.auto">create</property>
 
-        <mapping class="ru.cherniak.hibernate.h2.Customer"/>
-        <mapping class="ru.cherniak.hibernate.h2.Product"/>
+        <mapping class="ru.cherniak.hibernate.h2.model.Customer"/>
+        <mapping class="ru.cherniak.hibernate.h2.model.Product"/>
 
     </session-factory>
 </hibernate-configuration>
