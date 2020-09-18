@@ -17,7 +17,7 @@ public class CustomerRepository {
 
     public Customer save(Customer customer) {
         em.getTransaction().begin();
-        if (customer.getId() == null){
+        if (customer.getId() == null) {
             em.persist(customer);
         } else {
             customer = em.merge(customer);
@@ -30,7 +30,7 @@ public class CustomerRepository {
         return Collections.unmodifiableList(em.createQuery("SELECT c FROM Customer c", Customer.class).getResultList());
     }
 
-    public Customer findById(long id){
+    public Customer findById(long id) {
         Customer customer = em.find(Customer.class, id);
         if (customer == null) {
             throw new ResourceNotFoundException("Клиент с id = " + id + " не найден");
@@ -38,7 +38,7 @@ public class CustomerRepository {
         return customer;
     }
 
-    public void deleteById(long id){
+    public void deleteById(long id) {
         Customer customer = em.find(Customer.class, id);
         if (customer == null) {
             throw new ResourceNotFoundException("Клиент с id = " + id + " не найден");
@@ -49,7 +49,7 @@ public class CustomerRepository {
         em.getTransaction().commit();
     }
 
-    public List<Product> findProducts(long customerId){
+    public List<Product> findProducts(long customerId) {
         return Collections.unmodifiableList(em.find(Customer.class, customerId).getProducts());
     }
 }

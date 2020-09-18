@@ -28,7 +28,7 @@ public class Customer {
 
     public Customer(String name) {
         this(null, name);
-            }
+    }
 
     public Customer(Long id, String name) {
         this.id = id;
