@@ -23,6 +23,9 @@ public class Customer {
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products = new ArrayList<>();
 
+    @OneToMany(mappedBy = "customer")
+    private List<Purchase> purchases = new ArrayList<>();
+
     public Customer() {
     }
 
@@ -51,13 +54,8 @@ public class Customer {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    public void addProduct(Product product) {
-        products.add(product);
-        product.getCustomers().add(this);
+    public List<Purchase> getPurchases() {
+        return purchases;
     }
 
     @Override

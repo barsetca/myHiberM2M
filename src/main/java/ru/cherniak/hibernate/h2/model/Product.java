@@ -12,7 +12,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title", unique = true)
+    @Column(name = "title", unique = true, nullable = false)
     private String title;
 
     @Column(name = "cost")
@@ -59,10 +59,6 @@ public class Product {
 
     public List<Customer> getCustomers() {
         return customers;
-    }
-
-    public void setCustomers(List<Customer> customers) {
-        this.customers = customers;
     }
 
     public void addCustomer(Customer customer) {
