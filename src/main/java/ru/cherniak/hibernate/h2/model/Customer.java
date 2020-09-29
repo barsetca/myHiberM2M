@@ -2,6 +2,8 @@ package ru.cherniak.hibernate.h2.model;
 
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,14 +21,9 @@ public class Customer {
     @Column(name = "name", unique = true)
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "products_customers",
-            joinColumns = @JoinColumn(name = "customer_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products = new ArrayList<>();
-
     @OneToMany(mappedBy = "customer")
-    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
+   // @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE) - так каскадное удаление не срабытывает
+    @OnDelete(action = OnDeleteAction.CASCADE) // а так срабатывает
     private List<Purchase> purchases = new ArrayList<>();
 
     public Customer() {
@@ -51,10 +48,6 @@ public class Customer {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Product> getProducts() {
-        return products;
     }
 
     public List<Purchase> getPurchases() {

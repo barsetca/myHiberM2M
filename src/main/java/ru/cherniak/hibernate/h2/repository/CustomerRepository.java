@@ -2,7 +2,6 @@ package ru.cherniak.hibernate.h2.repository;
 
 import ru.cherniak.hibernate.h2.exception.ResourceNotFoundException;
 import ru.cherniak.hibernate.h2.model.Customer;
-import ru.cherniak.hibernate.h2.model.Product;
 import ru.cherniak.hibernate.h2.model.Purchase;
 
 import javax.persistence.EntityManager;
@@ -29,13 +28,6 @@ public class CustomerRepository {
         return customer;
     }
 
-    public void addProduct(Product product, long customerId) {
-        Customer customer = em.find(Customer.class, customerId);
-        customer.getProducts().add(product);
-        product.getCustomers().add(customer);
-        purchaseRepository.save(new Purchase(product.getTitle(), product.getCost()), customerId);
-    }
-
     public List<Customer> findAll() {
         return Collections.unmodifiableList(em.createQuery("SELECT c FROM Customer c", Customer.class).getResultList());
     }
@@ -54,24 +46,19 @@ public class CustomerRepository {
             throw new ResourceNotFoundException("Клиент с id = " + id + " не найден");
         }
         em.getTransaction().begin();
-        customer.getProducts().forEach(p -> p.getCustomers().remove(customer));
         em.remove(customer);
         em.getTransaction().commit();
-    }
-
-    public List<Product> findProducts(long customerId) {
-        return Collections.unmodifiableList(em.find(Customer.class, customerId).getProducts());
     }
 
     public List<Purchase> findPurchases(long customerId) {
         return Collections.unmodifiableList(em.find(Customer.class, customerId).getPurchases());
     }
 
-public List<Purchase> getPurchasesByCustomerId(long customerId){
+public Customer getPurchasesByCustomerId(long customerId){
         em.getTransaction().begin();
-        List<Purchase> purchases = em.createQuery("SELECT DISTINCT c FROM Customer c INNER JOIN FETCH c.purchases WHERE c.id=:customerId")
-                .setParameter("customerId", customerId).getResultList();
+        Customer customer = em.createQuery("SELECT DISTINCT c FROM Customer c INNER JOIN FETCH c.purchases WHERE c.id=:customerId",Customer.class)
+                .setParameter("customerId", customerId).getSingleResult();
         em.getTransaction().commit();
-        return purchases;
+        return customer;
 }
 }

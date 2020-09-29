@@ -7,6 +7,7 @@ import ru.cherniak.hibernate.h2.model.Purchase;
 import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class PurchaseRepository {
     private EntityManager em;
@@ -18,16 +19,16 @@ public class PurchaseRepository {
     public Purchase save(Purchase purchase, long customerId) {
         em.getTransaction().begin();
         Customer customer = em.getReference(Customer.class, customerId);
-        List<Purchase> purchases = customer.getPurchases();
+//        List<Purchase> purchases = customer.getPurchases();
         purchase.setCustomer(customer);
         if (purchase.getId() == null) {
             em.persist(purchase);
-            purchases.add(purchase);
+//            purchases.add(purchase);
         } else {
             purchase = em.merge(purchase);
             long id = purchase.getId();
-            purchases.removeIf(p -> p.getId().equals(id));
-            purchases.add(purchase);
+//            purchases.removeIf(p -> p.getId().equals(id));
+//            purchases.add(purchase);
         }
 
         em.getTransaction().commit();
@@ -52,16 +53,22 @@ public class PurchaseRepository {
         if (purchase == null) {
             throw new ResourceNotFoundException("Покупка с id = " + purchaseId + " не найдена");
         }
-        Customer customer = purchase.getCustomer();
+        //Customer customer = purchase.getCustomer();
         em.getTransaction().begin();
-        customer.getPurchases().remove(purchase);
+        //customer.getPurchases().remove(purchase);
         em.remove(purchase);
         em.getTransaction().commit();
     }
 
     public void deleteByCustomerId(long customerId) {
         em.getTransaction().begin();
-        em.createNativeQuery("DELETE FROM purshases WHERE id_customer=:id").setParameter("id", customerId);
+        //em.createNativeQuery("DELETE FROM purshases WHERE id_customer=:id").setParameter("id", customerId);
+        em.createQuery("DELETE FROM Purchase p WHERE p.customer.id=:id").setParameter("id", customerId);
         em.getTransaction().commit();
+    }
+
+    public List<Purchase> findPurchases(long customerId) {
+        return em.createQuery("SELECT p FROM Purchase p WHERE p.customer.id=:customerId", Purchase.class)
+                .setParameter("customerId", customerId).getResultList();
     }
 }

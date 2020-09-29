@@ -2,9 +2,8 @@ package ru.cherniak.hibernate.h2;
 
 import org.hibernate.cfg.Configuration;
 import ru.cherniak.hibernate.h2.model.Customer;
-import ru.cherniak.hibernate.h2.model.Product;
+import ru.cherniak.hibernate.h2.model.Purchase;
 import ru.cherniak.hibernate.h2.repository.CustomerRepository;
-import ru.cherniak.hibernate.h2.repository.ProductRepository;
 import ru.cherniak.hibernate.h2.repository.PurchaseRepository;
 
 import javax.persistence.EntityManager;
@@ -17,15 +16,12 @@ public class Main {
                 .buildSessionFactory();
         EntityManager em = factory.createEntityManager();
         CustomerRepository customerRepository = new CustomerRepository(em);
-        ProductRepository productRepository = new ProductRepository(em);
         PurchaseRepository purchaseRepository = new PurchaseRepository(em);
 
-        Product product1 = new Product("Coca-Cola", 50);
-        Product product2 = new Product("Sprite", 40);
-        System.out.println("\ninsert products");
-        productRepository.save(product1);
-        productRepository.save(product2);
-        productRepository.findAll().forEach(System.out::println);
+        Purchase product1 = new Purchase("Coca-Cola", 50);
+        Purchase product2 = new Purchase("Sprite", 40);
+        Purchase product3 = new Purchase("Fanta", 45);
+
 
         Customer customer1 = new Customer("Joric");
         Customer customer2 = new Customer("Doric");
@@ -35,13 +31,15 @@ public class Main {
         customerRepository.save(customer2);
         customerRepository.findAll().forEach(System.out::println);
 
-        System.out.println("\nshopping");
-        customerRepository.addProduct(product1, customer1.getId());
-        customerRepository.addProduct(product2, customer1.getId());
-        customerRepository.addProduct(product1, customer2.getId());
-        customerRepository.addProduct(product2, customer2.getId());
+        System.out.println("\ninsert products");
+        purchaseRepository.save(product1, customer1.getId());
+        purchaseRepository.save(product2, customer2.getId());
+        purchaseRepository.save(product3, customer1.getId());
+        purchaseRepository.findAll().forEach(System.out::println);
 
         System.out.println("\nupdate customers");
+        customer1.setName("Duric");
+        customer2.setName("Yuric");
         customerRepository.save(customer1);
         customerRepository.save(customer2);
         customerRepository.findAll().forEach(System.out::println);
@@ -55,53 +53,30 @@ public class Main {
 
         System.out.println("\ndelete purchase id = 1");
         purchaseRepository.deleteById(1L);
-        System.out.println("purchases of customer1");
-        customerRepository.findPurchases(customer1.getId()).forEach(System.out::println);
+        System.out.println("purchases");
+        purchaseRepository.findAll().forEach(System.out::println);
 
-        System.out.println("\nupdate product1");
-        product1.setCost(500);
-        productRepository.save(product1);
-        System.out.println(productRepository.findById(1L));
+        System.out.println("\nupdate product2");
+        product2.setCost(500);
+        purchaseRepository.save(product2, customer2.getId());
+        System.out.println(purchaseRepository.findById(product2.getId()));
 
-        System.out.println("\n addCustomer2 update product1");
-        customerRepository.addProduct(product1, customer2.getId());
-        System.out.println("History of purchases customer2");
-        customerRepository.findPurchases(customer2.getId()).forEach(System.out::println);
-
-        System.out.println("\nproducts");
-        productRepository.findAll().forEach(System.out::println);
-        System.out.println("customers of product1");
-        productRepository.findCustomers(1L).forEach(System.out::println);
-        System.out.println("customers of product2");
-        productRepository.findCustomers(2L).forEach(System.out::println);
-
-
-        System.out.println("\ncustomers");
-        customerRepository.findAll().forEach(System.out::println);
+         System.out.println("\nproducts");
+        purchaseRepository.findAll().forEach(System.out::println);
         System.out.println("products of customer1");
-        customerRepository.findProducts(1L).forEach(System.out::println);
+        purchaseRepository.findPurchases(1L).forEach(System.out::println);
         System.out.println("products of customer2");
-        customerRepository.findProducts(2L).forEach(System.out::println);
-
-        productRepository.findCustomers(1L).forEach(System.out::println);
-        productRepository.findCustomers(2L).forEach(System.out::println);
+        purchaseRepository.findPurchases(2L).forEach(System.out::println);
 
         System.out.println("\ndelete customer1");
         customerRepository.deleteById(1L);
         customerRepository.findAll().forEach(System.out::println);
 
-
-        System.out.println("\ndelete product1");
-        productRepository.deleteById(1L);
-        productRepository.findAll().forEach(System.out::println);
-        customerRepository.findProducts(2L).forEach(System.out::println);
-
-        System.out.println("Find by ID");
-        System.out.println(productRepository.findById(2L));
+        System.out.println("Find by customerID");
+        System.out.println(purchaseRepository.findPurchases(2L));
         System.out.println(customerRepository.findById(2L));
 
         System.out.println("\nfindPurchases(2L)");
-        customerRepository.findPurchases(2L).forEach(System.out::println);
+        System.out.println(customerRepository.getPurchasesByCustomerId(2L).getPurchases());
     }
-
 }

@@ -28,7 +28,8 @@ public class Purchase {
 
     @ManyToOne()
     @JoinColumn(name = "id_customer", nullable = false)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST, org.hibernate.annotations.CascadeType.MERGE})
+//    @Cascade({org.hibernate.annotations.CascadeType.PERSIST, org.hibernate.annotations.CascadeType.MERGE})
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Customer customer;
 
     public Purchase() {

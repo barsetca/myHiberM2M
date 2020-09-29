@@ -13,5 +13,11 @@
       <jdbc-driver>org.h2.Driver</jdbc-driver>
       <jdbc-url>jdbc:h2:C:\newprojects\HibernateH2DB\myH2</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="hiber" uuid="17c3f032-80bd-4a54-94ca-af0fb5f81229">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/hiber</jdbc-url>
+    </data-source>
   </component>
 </project>
