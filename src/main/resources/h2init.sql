@@ -29,6 +29,6 @@ CREATE TABLE IF NOT EXISTS purchases
     title VARCHAR(255) NOT NULL,
     cost  INTEGER,
     date  date default NOW(),
-    id_customer bigint,
+    id_customer bigint NOT NULL,
     FOREIGN KEY (id_customer) REFERENCES customers (id) ON DELETE CASCADE
 );

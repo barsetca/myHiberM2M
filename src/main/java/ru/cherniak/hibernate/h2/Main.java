@@ -30,7 +30,6 @@ public class Main {
         Customer customer1 = new Customer("Joric");
         Customer customer2 = new Customer("Doric");
 
-        //insert
         System.out.println("\ninsert customers");
         customerRepository.save(customer1);
         customerRepository.save(customer2);
@@ -54,10 +53,10 @@ public class Main {
         System.out.println("\npurchases of customer2");
         customerRepository.findPurchases(customer2.getId()).forEach(System.out::println);
 
-//        System.out.println("\ndelete purchase id = 1");
-//        purchaseRepository.deleteById(1L);
-//        System.out.println("purchases of customer1");
-//        customerRepository.findPurchases(customer1.getId()).forEach(System.out::println);
+        System.out.println("\ndelete purchase id = 1");
+        purchaseRepository.deleteById(1L);
+        System.out.println("purchases of customer1");
+        customerRepository.findPurchases(customer1.getId()).forEach(System.out::println);
 
         System.out.println("\nupdate product1");
         product1.setCost(500);
@@ -97,9 +96,12 @@ public class Main {
         productRepository.findAll().forEach(System.out::println);
         customerRepository.findProducts(2L).forEach(System.out::println);
 
-
         System.out.println("Find by ID");
         System.out.println(productRepository.findById(2L));
         System.out.println(customerRepository.findById(2L));
+
+        System.out.println("\nfindPurchases(2L)");
+        customerRepository.findPurchases(2L).forEach(System.out::println);
     }
+
 }

@@ -27,6 +27,7 @@ public class PurchaseRepository {
             purchase = em.merge(purchase);
             long id = purchase.getId();
             purchases.removeIf(p -> p.getId().equals(id));
+            purchases.add(purchase);
         }
 
         em.getTransaction().commit();
@@ -40,17 +41,20 @@ public class PurchaseRepository {
     public Purchase findById(long id) {
         Purchase purchase = em.find(Purchase.class, id);
         if (purchase == null) {
-            throw new ResourceNotFoundException("Клиент с id = " + id + " не найден");
+            throw new ResourceNotFoundException("Покупка с id = " + id + " не найдена");
         }
         return purchase;
     }
 
-    public void deleteById(long id) {
-        Purchase purchase = em.find(Purchase.class, id);
+    public void deleteById(long purchaseId) {
+        Purchase purchase = em.find(Purchase.class, purchaseId);
+
         if (purchase == null) {
-            throw new ResourceNotFoundException("Клиент с id = " + id + " не найден");
+            throw new ResourceNotFoundException("Покупка с id = " + purchaseId + " не найдена");
         }
+        Customer customer = purchase.getCustomer();
         em.getTransaction().begin();
+        customer.getPurchases().remove(purchase);
         em.remove(purchase);
         em.getTransaction().commit();
     }

@@ -1,2 +1,8 @@
 # Project exclude paths
 /target/
+/.idea/dataSources/81359122-d3a4-4cbe-9f2d-590f8d24f950.xml
+/.idea/dataSources/81359122-d3a4-4cbe-9f2d-590f8d24f950/storage_v2/_src_/database/MYH2.llckAA/schema/INFORMATION_SCHEMA.NBgcMw.meta
+/.idea/dataSources/81359122-d3a4-4cbe-9f2d-590f8d24f950/storage_v2/_src_/database/MYH2.llckAA.meta
+/.idea/dataSources/81359122-d3a4-4cbe-9f2d-590f8d24f950/storage_v2/_src_/database/MYH2.llckAA/schema/PUBLIC.aaZQjQ.meta
+/.idea/dataSources/81359122-d3a4-4cbe-9f2d-590f8d24f950/storage_v2/_src_/database/MYH2.llckAA/schema/PUBLIC.aaZQjQ.zip
+/.idea/vcs.xml

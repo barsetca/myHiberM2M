@@ -1,6 +1,8 @@
 package ru.cherniak.hibernate.h2.model;
 
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ public class Customer {
     private List<Product> products = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer")
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private List<Purchase> purchases = new ArrayList<>();
 
     public Customer() {

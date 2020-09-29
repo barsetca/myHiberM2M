@@ -1,5 +1,10 @@
 package ru.cherniak.hibernate.h2.model;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -21,8 +26,9 @@ public class Purchase {
     @Column(name = "date")
     private LocalDate date;
 
-    @ManyToOne
-    @JoinColumn(name = "id_customer")
+    @ManyToOne()
+    @JoinColumn(name = "id_customer", nullable = false)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST, org.hibernate.annotations.CascadeType.MERGE})
     private Customer customer;
 
     public Purchase() {

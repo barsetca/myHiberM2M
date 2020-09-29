@@ -53,7 +53,6 @@ public class CustomerRepository {
         if (customer == null) {
             throw new ResourceNotFoundException("Клиент с id = " + id + " не найден");
         }
-        customer.getPurchases().forEach(purchase -> purchaseRepository.deleteById(purchase.getId()));
         em.getTransaction().begin();
         customer.getProducts().forEach(p -> p.getCustomers().remove(customer));
         em.remove(customer);
@@ -67,4 +66,12 @@ public class CustomerRepository {
     public List<Purchase> findPurchases(long customerId) {
         return Collections.unmodifiableList(em.find(Customer.class, customerId).getPurchases());
     }
+
+public List<Purchase> getPurchasesByCustomerId(long customerId){
+        em.getTransaction().begin();
+        List<Purchase> purchases = em.createQuery("SELECT DISTINCT c FROM Customer c INNER JOIN FETCH c.purchases WHERE c.id=:customerId")
+                .setParameter("customerId", customerId).getResultList();
+        em.getTransaction().commit();
+        return purchases;
+}
 }
